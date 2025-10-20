@@ -61,16 +61,15 @@ export default function AdminLogin() {
         return;
       }
 
-      // Check if user has admin role
+      // Check if user has admin role using secure function
       // @ts-ignore - Types will regenerate after migration
-      const { data: roles } = await (supabase as any)
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin")
-        .single();
+      const { data: hasAdminRole } = await (supabase as any)
+        .rpc("has_role", { 
+          _user_id: session.user.id, 
+          _role: "admin" 
+        });
 
-      if (!roles) {
+      if (!hasAdminRole) {
         toast({
           title: "Access Denied",
           description: "You don't have admin permissions",

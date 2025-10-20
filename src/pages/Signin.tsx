@@ -86,9 +86,10 @@ export default function Signin() {
       });
 
       if (error) {
+        console.error("Sign in error:", error);
         toast({
-          title: "Error",
-          description: "Invalid credentials",
+          title: "Sign In Failed",
+          description: error.message || "Please check your credentials and try again",
           variant: "destructive",
         });
         return;

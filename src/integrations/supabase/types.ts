@@ -631,15 +631,43 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       account_type: "personal" | "company" | "organisation" | "government"
+      app_role: "admin" | "moderator" | "user"
       job_status: "open" | "closed" | "filled"
       job_type: "full-time" | "part-time" | "contract" | "freelance"
       post_type: "text" | "image" | "video" | "job" | "product" | "store"
@@ -775,6 +803,7 @@ export const Constants = {
   public: {
     Enums: {
       account_type: ["personal", "company", "organisation", "government"],
+      app_role: ["admin", "moderator", "user"],
       job_status: ["open", "closed", "filled"],
       job_type: ["full-time", "part-time", "contract", "freelance"],
       post_type: ["text", "image", "video", "job", "product", "store"],

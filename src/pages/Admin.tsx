@@ -45,13 +45,13 @@ export default function Admin() {
     }
 
     // @ts-ignore - Types will regenerate after migration
-    const { data: roles } = await (supabase as any)
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", session.user.id)
-      .eq("role", "admin");
+    const { data: hasAdminRole } = await (supabase as any)
+      .rpc("has_role", { 
+        _user_id: session.user.id, 
+        _role: "admin" 
+      });
 
-    if (!roles || roles.length === 0) {
+    if (!hasAdminRole) {
       toast({
         title: "Access Denied",
         description: "Admin permissions required",

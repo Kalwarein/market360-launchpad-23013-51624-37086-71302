@@ -58,7 +58,7 @@ export default function NewSignup() {
             phone_number: validatedData.phone,
             account_type: validatedData.accountType,
           },
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/onboarding`,
         },
       });
 

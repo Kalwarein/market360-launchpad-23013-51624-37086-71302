@@ -9,12 +9,15 @@ import { toast } from "@/hooks/use-toast";
 import { AppHeader } from "@/components/app/AppHeader";
 import { BottomNav } from "@/components/app/BottomNav";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
+import { StoreDetailModal } from "@/components/app/StoreDetailModal";
 
 export default function Stores() {
   const navigate = useNavigate();
   const { coinBalance, handleWalletClick, handleTabChange, handleCreateClick } = useAppNavigation();
   const [stores, setStores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedStore, setSelectedStore] = useState<any>(null);
+  const [showStoreModal, setShowStoreModal] = useState(false);
 
   useEffect(() => {
     fetchStores();
@@ -27,7 +30,7 @@ export default function Stores() {
         .from("stores")
         .select(`
           *,
-          profiles:user_id (username)
+          profiles:user_id (username, phone_number, website_url, city, country)
         `)
         .order("created_at", { ascending: false });
 
@@ -42,6 +45,11 @@ export default function Stores() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleStoreClick = (store: any) => {
+    setSelectedStore(store);
+    setShowStoreModal(true);
   };
 
   return (
@@ -69,16 +77,32 @@ export default function Stores() {
               <Card 
                 key={store.id} 
                 className="hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => navigate(`/stores/${store.id}`)}
+                onClick={() => handleStoreClick(store)}
               >
-                {store.banner_url && (
+                {store.banner_url ? (
+                  <div className="h-32 overflow-hidden">
+                    <img 
+                      src={store.banner_url} 
+                      alt="Store banner"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
                   <div className="h-32 bg-gradient-to-br from-primary/20 to-secondary/20" />
                 )}
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <CardTitle className="flex items-center gap-2">
-                        <Store className="h-5 w-5" />
+                        {store.logo_url ? (
+                          <img 
+                            src={store.logo_url} 
+                            alt="Store logo"
+                            className="h-8 w-8 rounded object-cover"
+                          />
+                        ) : (
+                          <Store className="h-5 w-5" />
+                        )}
                         {store.name}
                       </CardTitle>
                       <p className="text-sm text-muted-foreground">
@@ -115,6 +139,12 @@ export default function Stores() {
         activeTab="markets" 
         onTabChange={handleTabChange} 
         onCreateClick={handleCreateClick} 
+      />
+
+      <StoreDetailModal 
+        store={selectedStore}
+        open={showStoreModal}
+        onOpenChange={setShowStoreModal}
       />
     </div>
   );
