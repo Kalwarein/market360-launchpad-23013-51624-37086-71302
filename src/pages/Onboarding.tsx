@@ -67,7 +67,8 @@ export default function Onboarding() {
 
       setUserId(session.user.id);
 
-      const { data: profile } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { data: profile } = await (supabase as any)
         .from("profiles")
         .select("*")
         .eq("id", session.user.id)
@@ -155,7 +156,8 @@ export default function Onboarding() {
         updateData.services_products = formData.servicesProducts;
       }
 
-      const { error } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { error } = await (supabase as any)
         .from("profiles")
         .update(updateData)
         .eq("id", userId);

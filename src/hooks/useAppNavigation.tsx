@@ -15,7 +15,8 @@ export const useAppNavigation = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { data } = await (supabase as any)
         .from("user_balances")
         .select("balance")
         .eq("user_id", user.id)

@@ -33,7 +33,8 @@ export default function CreateJob() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { error } = await supabase.from("jobs").insert({
+      // @ts-ignore - Types will regenerate after migration
+      const { error } = await (supabase as any).from("jobs").insert({
         title: formData.title,
         description: formData.description,
         job_type: formData.job_type as any,

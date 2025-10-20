@@ -29,7 +29,8 @@ export default function Profile() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { data, error } = await (supabase as any)
         .from("profiles")
         .select("*")
         .eq("id", user.id)
@@ -53,7 +54,8 @@ export default function Profile() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { data, error } = await (supabase as any)
         .from("posts")
         .select("*")
         .eq("user_id", user.id)

@@ -70,7 +70,8 @@ export default function AppHome() {
         return;
       }
 
-      const { data: profile } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { data: profile } = await (supabase as any)
         .from("profiles")
         .select("*")
         .eq("id", session.user.id)

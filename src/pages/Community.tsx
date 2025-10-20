@@ -22,7 +22,8 @@ export default function Community() {
 
   const fetchPosts = async () => {
     try {
-      const { data, error } = await supabase
+      // @ts-ignore - Types will regenerate after migration
+      const { data, error } = await (supabase as any)
         .from("posts")
         .select(`
           *,
@@ -48,7 +49,8 @@ export default function Community() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { error } = await supabase.from("likes").insert({
+      // @ts-ignore - Types will regenerate after migration
+      const { error } = await (supabase as any).from("likes").insert({
         user_id: user.id,
         post_id: postId,
       });
