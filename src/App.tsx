@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster as Sonner, toast } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react"; // ✅ for the error icon
 import Index from "./pages/Index";
 import NewSignup from "./pages/NewSignup";
 import Signin from "./pages/Signin";
@@ -28,7 +29,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// ✅ Component to handle link blocking
+// ✅ Link blocker with styled toast
 const LinkBlocker = () => {
   const navigate = useNavigate();
 
@@ -38,8 +39,21 @@ const LinkBlocker = () => {
       if (target && target.href) {
         if (target.href.includes("lovable.dev/projects/0bd253db")) {
           e.preventDefault();
-          alert("This link is blocked and will redirect you back to the app.");
-          navigate("/");
+
+          toast.error("Can't visit that site right now.", {
+            description: "Please try again later.",
+            icon: <AlertCircle className="text-red-500 w-5 h-5" />,
+            action: {
+              label: "OK",
+              onClick: () => navigate("/"),
+            },
+            style: {
+              background: "#1f1f1f",
+              color: "#fff",
+              border: "1px solid #ff4444",
+              borderRadius: "12px",
+            },
+          });
         }
       }
     };
@@ -57,7 +71,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <LinkBlocker /> {/* 👈 Added this line only */}
+        <LinkBlocker /> {/* 👈 handles blocking + toast */}
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<NewSignup />} />
