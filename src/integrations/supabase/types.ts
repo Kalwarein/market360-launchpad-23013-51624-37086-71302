@@ -137,8 +137,10 @@ export type Database = {
       jobs: {
         Row: {
           application_deadline: string | null
+          application_fee: number | null
           applications_count: number | null
           created_at: string
+          custom_fields: Json | null
           description: string
           id: string
           is_featured: boolean | null
@@ -157,8 +159,10 @@ export type Database = {
         }
         Insert: {
           application_deadline?: string | null
+          application_fee?: number | null
           applications_count?: number | null
           created_at?: string
+          custom_fields?: Json | null
           description: string
           id?: string
           is_featured?: boolean | null
@@ -177,8 +181,10 @@ export type Database = {
         }
         Update: {
           application_deadline?: string | null
+          application_fee?: number | null
           applications_count?: number | null
           created_at?: string
+          custom_fields?: Json | null
           description?: string
           id?: string
           is_featured?: boolean | null
@@ -241,6 +247,39 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          attachment_url: string | null
+          content: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          receiver_id: string
+          sender_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          attachment_url?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          receiver_id: string
+          sender_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          attachment_url?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          receiver_id?: string
+          sender_id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       onboarding_progress: {
         Row: {
           completed_steps: number[] | null
@@ -286,6 +325,7 @@ export type Database = {
           updated_at: string
           user_id: string
           video_url: string | null
+          views_count: number | null
         }
         Insert: {
           comments_count?: number | null
@@ -301,6 +341,7 @@ export type Database = {
           updated_at?: string
           user_id: string
           video_url?: string | null
+          views_count?: number | null
         }
         Update: {
           comments_count?: number | null
@@ -316,6 +357,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
           video_url?: string | null
+          views_count?: number | null
         }
         Relationships: [
           {

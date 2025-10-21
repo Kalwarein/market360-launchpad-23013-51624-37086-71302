@@ -18,10 +18,31 @@ export default function Stores() {
   const [loading, setLoading] = useState(true);
   const [selectedStore, setSelectedStore] = useState<any>(null);
   const [showStoreModal, setShowStoreModal] = useState(false);
+  const [userHasStore, setUserHasStore] = useState(false);
 
   useEffect(() => {
+    checkUserStore();
     fetchStores();
   }, []);
+
+  const checkUserStore = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // @ts-ignore
+      const { data, error } = await (supabase as any)
+        .from("stores")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+
+      setUserHasStore(!!data);
+    } catch (error) {
+      // User doesn't have a store yet
+      setUserHasStore(false);
+    }
+  };
 
   const fetchStores = async () => {
     try {
@@ -68,14 +89,26 @@ export default function Stores() {
               <ShoppingBag className="mr-2 h-4 w-4" />
               Buy Products
             </Button>
-            <Button 
-              onClick={() => navigate("/stores/create")} 
-              className="flex-1"
-              variant="outline"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Sell (Create Store)
-            </Button>
+            {!userHasStore && (
+              <Button 
+                onClick={() => navigate("/stores/create")} 
+                className="flex-1"
+                variant="outline"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Create Store
+              </Button>
+            )}
+            {userHasStore && (
+              <Button 
+                onClick={() => navigate("/products?mine=true")} 
+                className="flex-1"
+                variant="outline"
+              >
+                <Store className="mr-2 h-4 w-4" />
+                My Products
+              </Button>
+            )}
           </div>
         </div>
 
