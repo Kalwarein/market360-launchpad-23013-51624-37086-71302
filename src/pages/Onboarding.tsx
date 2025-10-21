@@ -374,24 +374,110 @@ export default function Onboarding() {
               <h2 className="text-2xl font-bold">Profile Images</h2>
               <p className="text-sm text-muted-foreground">Upload your profile picture{accountType !== "personal" && " and banner image"}</p>
               <div className="space-y-2">
-                <Label htmlFor="profileImage">Profile Picture URL</Label>
-                <Input
-                  id="profileImage"
-                  placeholder="https://example.com/image.jpg"
-                  value={formData.profileImage}
-                  onChange={(e) => setFormData({ ...formData, profileImage: e.target.value })}
-                />
-                <p className="text-xs text-muted-foreground">For now, paste an image URL. File upload coming soon.</p>
+                <Label>Profile Picture</Label>
+                <div className="border-2 border-dashed border-border rounded-lg p-4">
+                  {formData.profileImage ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <img 
+                        src={formData.profileImage} 
+                        alt="Profile preview" 
+                        className="w-32 h-32 rounded-full object-cover"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setFormData({ ...formData, profileImage: "" })}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                        <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <Label htmlFor="profile-image-upload" className="cursor-pointer">
+                        <span className="text-sm text-primary hover:underline">
+                          Click to upload profile picture
+                        </span>
+                        <input
+                          id="profile-image-upload"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              // For now, create a preview URL
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setFormData({ ...formData, profileImage: reader.result as string });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </Label>
+                      <p className="text-xs text-muted-foreground mt-1">PNG, JPG, WEBP up to 5MB</p>
+                    </div>
+                  )}
+                </div>
               </div>
               {accountType !== "personal" && (
                 <div className="space-y-2">
-                  <Label htmlFor="bannerImage">Banner Image URL</Label>
-                  <Input
-                    id="bannerImage"
-                    placeholder="https://example.com/banner.jpg"
-                    value={formData.bannerImage}
-                    onChange={(e) => setFormData({ ...formData, bannerImage: e.target.value })}
-                  />
+                  <Label>Banner Image</Label>
+                  <div className="border-2 border-dashed border-border rounded-lg p-4">
+                    {formData.bannerImage ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <img 
+                          src={formData.bannerImage} 
+                          alt="Banner preview" 
+                          className="w-full h-32 object-cover rounded"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setFormData({ ...formData, bannerImage: "" })}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <div className="mx-auto h-16 w-16 rounded bg-primary/10 flex items-center justify-center mb-2">
+                          <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <Label htmlFor="banner-image-upload" className="cursor-pointer">
+                          <span className="text-sm text-primary hover:underline">
+                            Click to upload banner image
+                          </span>
+                          <input
+                            id="banner-image-upload"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                  setFormData({ ...formData, bannerImage: reader.result as string });
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                          />
+                        </Label>
+                        <p className="text-xs text-muted-foreground mt-1">PNG, JPG, WEBP up to 5MB</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

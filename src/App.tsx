@@ -17,6 +17,8 @@ import Jobs from "./pages/Jobs";
 import CreateJob from "./pages/CreateJob";
 import Stores from "./pages/Stores";
 import CreateStore from "./pages/CreateStore";
+import Products from "./pages/Products";
+import Create from "./pages/Create";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
@@ -44,6 +46,8 @@ const App = () => (
           <Route path="/jobs/create" element={<CreateJob />} />
           <Route path="/stores" element={<Stores />} />
           <Route path="/stores/create" element={<CreateStore />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/create" element={<Create />} />
           <Route path="/community" element={<Community />} />
           <Route path="/profile" element={<Profile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

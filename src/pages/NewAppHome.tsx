@@ -132,7 +132,7 @@ export default function NewAppHome() {
           setActiveTab(tab);
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
-        onCreateClick={() => setShowCreateModal(true)}
+        onCreateClick={() => navigate("/create")}
       />
 
       {/* Create Post Modal */}

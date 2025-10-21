@@ -47,7 +47,7 @@ export const useAppNavigation = () => {
   };
 
   const handleCreateClick = () => {
-    navigate("/profile");
+    navigate("/create");
   };
 
   return {

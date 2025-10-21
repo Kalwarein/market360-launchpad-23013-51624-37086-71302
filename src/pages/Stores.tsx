@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Store, Plus, Star } from "lucide-react";
+import { Store, Plus, Star, ShoppingBag } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { AppHeader } from "@/components/app/AppHeader";
 import { BottomNav } from "@/components/app/BottomNav";
@@ -57,13 +57,29 @@ export default function Stores() {
       <AppHeader onWalletClick={handleWalletClick} coinBalance={coinBalance} />
       
       <main className="container mx-auto px-4 py-6 pb-24 mt-16">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Stores & Marketplace</h1>
-          <Button onClick={() => navigate("/stores/create")}>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Store
-          </Button>
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-4">Marketplace</h1>
+          <div className="flex gap-3">
+            <Button 
+              onClick={() => navigate("/products")} 
+              className="flex-1"
+              variant="default"
+            >
+              <ShoppingBag className="mr-2 h-4 w-4" />
+              Buy Products
+            </Button>
+            <Button 
+              onClick={() => navigate("/stores/create")} 
+              className="flex-1"
+              variant="outline"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Sell (Create Store)
+            </Button>
+          </div>
         </div>
+
+        <h2 className="text-xl font-semibold mb-4">All Stores</h2>
 
         {loading ? (
           <div className="text-center py-12">Loading stores...</div>
